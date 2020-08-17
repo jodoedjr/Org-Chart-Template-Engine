@@ -1,5 +1,5 @@
 {
-  "name": "unit10hw",
+  "name": "org-chart-template-engine",
   "version": "1.0.0",
   "description": "OOP and testing for week 10 homework",
   "main": "app.js",
@@ -14,8 +14,8 @@
     "type": "git",
     "url": "git+https://github.com/stevetrilogy/unit10hw.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "John Edwards",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/stevetrilogy/unit10hw/issues"
   },
@@ -25,5 +25,11 @@
   },
   "devDependencies": {
     "jest": "^24.8.0"
-  }
+  },
+  "keywords": [
+    "JavaScript",
+    "CLI",
+    "Org",
+    "Chart"
+  ]
 }
