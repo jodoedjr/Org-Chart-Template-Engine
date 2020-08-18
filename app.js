@@ -1,13 +1,17 @@
+//require Manager, Engineer, and Intern subclasses
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
+//require inquirer, path, and fs modules
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
 
+//ouput directory and output path for html file
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
+//require html rendering functions
 const render = require("./lib/htmlRenderer");
 const { create } = require("domain");
 
@@ -78,10 +82,8 @@ const internQuestions = [
     }
 ];
 
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
 async function createManager() {//prompt the user for the manager's information
-    let data = await inquirer.prompt([
+    let data = await inquirer.prompt([ // await user reponse to these questions
         {
             type: "input",
             name: "name",
@@ -103,10 +105,10 @@ async function createManager() {//prompt the user for the manager's information
             message: "What is the manager's office number?"
         }
     ]);
-    return new Manager(data.name, data.id, data.email, data.officeNumber);
+    return new Manager(data.name, data.id, data.email, data.officeNumber); //return a new, populated manager object
 }
 async function createEngineer() {//prompt the user for the enginner's information
-    const data = await inquirer.prompt([
+    const data = await inquirer.prompt([//await the user response to these questions
         {
             type: "input",
             name: "name",
@@ -128,10 +130,10 @@ async function createEngineer() {//prompt the user for the enginner's informatio
             message: "What is the engineer's github username?"
         }
     ]);
-    return new Engineer(data.name, data.id, data.email, data.github);
+    return new Engineer(data.name, data.id, data.email, data.github);//return a new, populated engineer object
 }
 async function createIntern() {//prompt the user for the intern's information
-    const data = await inquirer.prompt([
+    const data = await inquirer.prompt([//await the user response to these questions
         {
             type: "input",
             name: "name",
@@ -156,34 +158,31 @@ async function createIntern() {//prompt the user for the intern's information
     return new Intern(data.name, data.id, data.email, data.school);
 }
 
-async function addEmployee() {
-    const data = await inquirer.prompt([
-        {
-            type: "list",
-            name: "Options",
-            choices: ["Add Engineer", "Add Intern", "Finished - Create Org Chart"]
-        }
-    ]);
-    let employeeHolder = {};
-    switch (data.Options) {
-        case "Add Engineer":
-            employeeHolder = await createEngineer();
-            break;
-        case "Add Intern":
-            employeeHolder = await createIntern();
-            break;
+async function createEmployee(type) {
+    let data = {};
+    switch (type) {
+        case "Manager":
+            data = await inquirer.prompt(managerQuestions);
+            return new Manager(data.name, data.id, data.email, data.officeNumber);
+        case "Engineer":
+            data = await inquirer.prompt(engineerQuestions);
+            return new Engineer(data.name, data.id, data.email, data.github);
+        case "Intern":
+            data = await inquirer.prompt(internQuestions);
+            return new Intern(data.name, data.id, data.email, data.school);
         default:
-            employeeHolder = await -1;
+            data = await inquirer.prompt(managerQuestions);
+            return new Manager(data.name, data.id, data.email, data.officeNumber);
     }
-    return employeeHolder;
 }
 
 async function initialize() {
-    const employees = [];
-    let employeeHolder = await createManager();
-    employees.push(employeeHolder);
-    while (employees[employees.length - 1] != -1) {
-        const data = await inquirer.prompt([
+    const employees = []; // initialize array of employees
+    let employeeHolder = await createEmployee("Manager"); //create a manger, returns a Manager object
+    employees.push(employeeHolder); // add Manager to employee array
+    let continueLoop = true;
+    while (continueLoop) { // while loop runs until user chooses to exit
+        const data = await inquirer.prompt([// await user input to add engineer, add intern, or exit
             {
                 type: "list",
                 name: "Options",
@@ -193,51 +192,31 @@ async function initialize() {
         ]);
         switch (data.Options) {
             case "Add Engineer":
-                employeeHolder = await createEngineer();
+                employeeHolder = await createEmployee("Engineer"); //returns Engineer object
+                employees.push(employeeHolder); // adds employee to array
                 break;
             case "Add Intern":
-                employeeHolder = await createIntern();
+                employeeHolder = await createEmployee("Intern"); //returns Intern object
+                employees.push(employeeHolder); // adds employee to array
                 break;
             default:
-                employeeHolder = -1;
+                continueLoop = false; // creates condition to exit while loop
         }
-        employees.push(employeeHolder);
     }
-    employees.pop(); //remove -1 from array
-    const html = render(employees);
-    fs.writeFile(outputPath, html, function(err){
-        if(err){
-            //console.log(err);
-            //return;
-            fs.mkdir(OUTPUT_DIR, 0777, function(err){
-                if(err){
+    console.log(employees);
+    const html = render(employees); //returns string of html code populated with employees array data
+    fs.writeFile(outputPath, html, function (err) { // write html file to output path
+        if (err) { //if err, attempt to create the output directory
+            fs.mkdir(OUTPUT_DIR, 0777, function (err) {
+                if (err) { //if that errs, log err and return
                     console.log(err);
                     return;
                 }
-                console.log(`Created "${OUTPUT_DIR}" directory`);
+                console.log(`Created "${OUTPUT_DIR}" directory`);//success creating directory
             });
         }
-        console.log(`Wrote Org-Chart to "${outputPath}"`);
+        console.log(`Wrote Org-Chart to "${outputPath}"`);//success writing to file
     });
 }
 
 initialize();//run program
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
-
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
-
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
-
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
