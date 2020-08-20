@@ -82,85 +82,9 @@ const internQuestions = [
     }
 ];
 
-async function createManager() {//prompt the user for the manager's information
-    let data = await inquirer.prompt([ // await user reponse to these questions
-        {
-            type: "input",
-            name: "name",
-            message: "What is the manager's name?"
-        },
-        {
-            type: "input",
-            name: "id",
-            message: "What is the manager's ID #?"
-        },
-        {
-            type: "input",
-            name: "email",
-            message: "What is the manager's email address?"
-        },
-        {
-            type: "input",
-            name: "officeNumber",
-            message: "What is the manager's office number?"
-        }
-    ]);
-    return new Manager(data.name, data.id, data.email, data.officeNumber); //return a new, populated manager object
-}
-async function createEngineer() {//prompt the user for the enginner's information
-    const data = await inquirer.prompt([//await the user response to these questions
-        {
-            type: "input",
-            name: "name",
-            message: "What is the engineer's name?"
-        },
-        {
-            type: "input",
-            name: "id",
-            message: "What is the engineer's ID #?"
-        },
-        {
-            type: "input",
-            name: "email",
-            message: "What is the engineer's email address?"
-        },
-        {
-            type: "input",
-            name: "github",
-            message: "What is the engineer's github username?"
-        }
-    ]);
-    return new Engineer(data.name, data.id, data.email, data.github);//return a new, populated engineer object
-}
-async function createIntern() {//prompt the user for the intern's information
-    const data = await inquirer.prompt([//await the user response to these questions
-        {
-            type: "input",
-            name: "name",
-            message: "What is the intern's name?"
-        },
-        {
-            type: "input",
-            name: "id",
-            message: "What is the intern's ID #?"
-        },
-        {
-            type: "input",
-            name: "email",
-            message: "What is the intern's email address?"
-        },
-        {
-            type: "input",
-            name: "school",
-            message: "What is the intern's school?"
-        }
-    ]);
-    return new Intern(data.name, data.id, data.email, data.school);
-}
-
-async function createEmployee(type) {
+async function createEmployee(type) { //interrogate user for employee info, and return the appropriate Employee subclass object
     let data = {};
-    switch (type) {
+    switch (type) { // Manager, Engineer, or Intern
         case "Manager":
             data = await inquirer.prompt(managerQuestions);
             return new Manager(data.name, data.id, data.email, data.officeNumber);
@@ -203,7 +127,6 @@ async function initialize() {
                 continueLoop = false; // creates condition to exit while loop
         }
     }
-    console.log(employees);
     const html = render(employees); //returns string of html code populated with employees array data
     fs.writeFile(outputPath, html, function (err) { // write html file to output path
         if (err) { //if err, attempt to create the output directory
