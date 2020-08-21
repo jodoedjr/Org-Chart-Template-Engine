@@ -136,9 +136,19 @@ async function initialize() {
                     return;
                 }
                 console.log(`Created "${OUTPUT_DIR}" directory`);//success creating directory
+                fs.writeFile(outputPath, html, function (err) { // write html file to output path
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        console.log(`Wrote Org-Chart to "${outputPath}"`);//success writing to file\
+                    }
+                });
             });
         }
-        console.log(`Wrote Org-Chart to "${outputPath}"`);//success writing to file
+        else {// if successful write on first try
+            console.log(`Wrote Org-Chart to "${outputPath}"`);//success writing to file
+        }
     });
 }
 
