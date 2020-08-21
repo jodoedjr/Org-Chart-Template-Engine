@@ -26,7 +26,6 @@ Run `node index.js` to run this CLI app in your console.\
 Follow the terminal prompts to fill out the employee information.
 
 ![Example Result 1](https://github.com/jodoedjr/Org-Chart-Template-Engine/blob/master/Assets/Sample1.png)
-![Example Result 2](https://github.com/jodoedjr/Org-Chart-Template-Engine/blob/master/Assets/Sample2.png)
 
 [Checkout this video (*hosted on Google Drive*) of me using this app!](https://drive.google.com/file/d/1FaKam6LMAzoUFU3rgXlRMMq-7Os1ariX/view?usp=sharing)
 
