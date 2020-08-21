@@ -45,7 +45,7 @@ No Contributions Allowed, but feel free to clone, fork, and duplicate.
 
 Jest tests provided for Manager, Engineer and, Intern subclasses of Employee parent class.\
 Install test dependencies: `npm install --only=dev` or manually `npm install jest`\
-Run tests: `npm run test` (runs jest with --verbose flag on contents of test/ folder)\
+Run tests: `npm run test` (runs jest with --verbose flag on contents of test/ folder)
 
 
 ## Questions
