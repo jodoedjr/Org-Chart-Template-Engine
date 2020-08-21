@@ -22,7 +22,7 @@ clone this repo locally, and run 'npm install'
 
 ## Usage 
 
-Run 'node index.js' to run this CLI app in your console.
+Run `node index.js` to run this CLI app in your console.
 Follow the terminal prompts to fill out the employee information.
 
 ![Example Result 1](https://github.com/jodoedjr/Org-Chart-Template-Engine/blob/master/Assets/Sample1.png)
@@ -44,8 +44,8 @@ No Contributions Allowed, but feel free to clone, fork, and duplicate.
 ## Tests
 
 Jest tests provided for Manager, Engineer and, Intern subclasses of Employee parent class.
-Install test dependencies: 'npm install --only=dev' or manually 'npm install jest'
-Run tests: 'npm run test' (runs jest with --verbose flag on contents of test/ folder)
+Install test dependencies: `npm install --only=dev` or manually `npm install jest`
+Run tests: `npm run test` (runs jest with --verbose flag on contents of test/ folder)
 
 
 ## Questions
